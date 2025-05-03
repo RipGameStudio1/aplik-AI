@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Знакомство с Апликом</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comfortaa', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 100vw;
+            max-width: calc(100vh * 9 / 16);
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(145deg, #ffffff, #f5f7fa);
+            margin: 0 auto;
+        }
+
+        @media (max-width: calc(100vh * 9 / 16)) {
+            .container {
+                width: 100vw;
+                height: calc(100vw * 16 / 9);
+                max-height: 100vh;
+                border-radius: 0;
+            }
+        }
+
+        .pages-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+            visibility: hidden;
+        }
+
+        .page.active {
+            transform: translateX(0);
+            opacity: 1;
+            visibility: visible;
+            z-index: 5;
+        }
+
+        .page.slide-left {
+            transform: translateX(-100%);
+            opacity: 0;
+            z-index: 4;
+        }
+
+        .page.slide-right {
+            transform: translateX(100%);
+            opacity: 0;
+            z-index: 4;
+        }
+
+        .page-indicator {
+            position: absolute;
+            bottom: 6.5%;
+            left: 6%;
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+            align-items: center;
+        }
+
+        .dot {
+            width: 1.5vmin;
+            height: 1.5vmin;
+            max-width: 8px;
+            max-height: 8px;
+            border-radius: 1vmin;
+            background-color: rgba(0, 0, 0, 0.15);
+            transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        .dot.active {
+            width: 4.5vmin;
+            max-width: 24px;
+            background-color: #83a73a;
+        }
+
+        .welcome-content, .welcome-text, .image-container, .next-button, .page2-content {
+            transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+        }
+
+        .welcome-text {
+            position: absolute;
+            top: 5%;
+            left: 6%;
+            font-size: min(4vmin, 26px);
+            font-weight: 300;
+            color: #8a94a6;
+            letter-spacing: 0.1em;
+            z-index: 10;
+        }
+
+        .welcome-content {
+            position: absolute;
+            top: 15%;
+            left: 6%;
+            width: 88%;
+            text-align: left;
+            z-index: 10;
+        }
+
+        .page-title {
+            font-size: min(8.6vmin, 60px);
+            font-weight: 700;
+            color: #484848;
+            line-height: 1.2;
+            -webkit-text-stroke: min(0.33vmin, 2px) #484848;
+            white-space: nowrap;
+            margin-bottom: min(2vmin, 15px);
+        }
+
+        .page-subtitle {
+            font-size: min(4.5vmin, 30px);
+            font-weight: 400;
+            margin-top: -2%;
+            color: #83a73a;
+            line-height: 1.2;
+            animation: pulseColor 4s ease-in-out infinite;
+        }
+
+        @keyframes pulseColor {
+            0% { color: #83a73a; }
+            50% { color: #83a73a6e; }
+            100% { color: #83a73a; }
+        }
+
+        .image-container {
+            position: absolute;
+            top: 35%;
+            left: 0;
+            width: 100%;
+            height: 45%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            z-index: 5;
+        }
+
+        .character-image {
+            max-height: 100%;
+            max-width: 90%;
+            object-fit: contain;
+            animation: floatAnimation 3s ease-in-out infinite;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.08));
+        }
+
+        @keyframes floatAnimation {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-2%); }
+            100% { transform: translateY(0); }
+        }
+
+        .next-button {
+            position: absolute;
+            bottom: 6.5%;
+            right: 6%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            z-index: 10;
+            padding: min(2vmin, 14px) min(4vmin, 24px);
+            background-color: #484848;
+            border-radius: min(5vmin, 30px);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .next-button:hover {
+            background-color: #83a73a;
+            transform: translateY(-2px);
+        }
+
+        .ready-text {
+            font-size: min(2.5vmin, 18px);
+            font-weight: 700;
+            color: white;
+        }
+
+        .material-icons-round {
+            color: white;
+            font-size: min(2.5vmin, 18px);
+        }
+
+        /* Страница 2 и 3 */
+        .page2-content {
+            position: absolute;
+            top: 15%;
+            left: 6%;
+            width: 88%;
+            text-align: left;
+            z-index: 5;
+        }
+
+        .page2-title {
+            font-size: min(7vmin, 48px);
+            font-weight: 700;
+            color: #484848;
+            margin-bottom: min(4vmin, 30px);
+            -webkit-text-stroke: min(0.25vmin, 1.5px) #484848;
+        }
+
+        .page2-text {
+            font-size: min(5vmin, 30px);
+            color: #83a73a;
+            line-height: 1.4;
+            animation: pulseColor 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="pages-container">
+            <div class="page active" id="page1">
+                <div class="welcome-text">
+                    Привет!
+                </div>
+                
+                <div class="welcome-content">
+                    <p class="page-title">Меня зовут Аплик!</p>
+                    <p class="page-subtitle">я помогу тебе на пути к цели! ❤️‍🔥</p>
+                </div>
+                
+                <div class="image-container">
+                    <img src="aplik.png" alt="Аплик" class="character-image">
+                </div>
+                
+                <div class="next-button" data-go-to="page2">
+                    <span class="ready-text">я готов!</span>
+                    <span class="material-icons-round">arrow_forward_ios</span>
+                </div>
+            </div>
+            
+            <div class="page" id="page2">
+                <div class="page2-content">
+                    <h2 class="page2-title">Вторая страница</h2>
+                    <p class="page2-text">Это вторая страница приложения.<br>Свайпни влево или вправо, чтобы переключиться между страницами.</p>
+                </div>
+                
+                <div class="next-button" data-go-to="page3">
+                    <span class="ready-text">Дальше</span>
+                    <span class="material-icons-round">arrow_forward_ios</span>
+                </div>
+            </div>
+            
+            <div class="page" id="page3">
+                <div class="page2-content">
+                    <h2 class="page2-title">Третья страница</h2>
+                    <p class="page2-text">Это последняя страница демонстрации.<br>Ты можешь вернуться назад, если хочешь.</p>
+                </div>
+                
+                <div class="next-button" data-go-to="page1">
+                    <span class="ready-text">В начало</span>
+                    <span class="material-icons-round">arrow_forward_ios</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-indicator">
+            <div class="dot active" data-page="page1"></div>
+            <div class="dot" data-page="page2"></div>
+            <div class="dot" data-page="page3"></div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const pagesContainer = document.querySelector('.pages-container');
+            const pages = document.querySelectorAll('.page');
+            const dots = document.querySelectorAll('.dot');
+            const nextButtons = document.querySelectorAll('.next-button');
+            
+            let currentPageIndex = 0;
+            let startX, startY;
+            let isDragging = false;
+            let isAnimating = false;
+            
+            // Обработчики кнопок переключения
+            nextButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    if (isAnimating) return;
+                    
+                    const targetPageId = this.getAttribute('data-go-to');
+                    let targetIndex = 0;
+                    
+                    pages.forEach((page, index) => {
+                        if (page.id === targetPageId) {
+                            targetIndex = index;
+                        }
+                    });
+                    
+                    goToPage(targetIndex);
+                });
+            });
+            
+            // Обработка нажатий на точки
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', function() {
+                    if (isAnimating) return;
+                    goToPage(index);
+                });
+            });
+            
+            // Обработка свайпов
+            pagesContainer.addEventListener('touchstart', function(e) {
+                if (isAnimating) return;
+                
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                isDragging = true;
+            });
+            
+            pagesContainer.addEventListener('touchmove', function(e) {
+                if (!isDragging || isAnimating) return;
+                
+                const currentX = e.touches[0].clientX;
+                const currentY = e.touches[0].clientY;
+                
+                const diffX = startX - currentX;
+                const diffY = startY - currentY;
+                
+                if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+                    e.preventDefault();
+                }
+            });
+            
+            pagesContainer.addEventListener('touchend', function(e) {
+                if (!isDragging || isAnimating) return;
+                
+                const endX = e.changedTouches[0].clientX;
+                const endY = e.changedTouches[0].clientY;
+                
+                const diffX = startX - endX;
+                const diffY = startY - endY;
+                
+                if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 80) {
+                    if (diffX > 0 && currentPageIndex < pages.length - 1) {
+                        // Свайп влево - следующая страница
+                        goToPage(currentPageIndex + 1);
+                    } else if (diffX < 0 && currentPageIndex > 0) {
+                        // Свайп вправо - предыдущая страница
+                        goToPage(currentPageIndex - 1);
+                    }
+                }
+                
+                isDragging = false;
+            });
+            
+            // Функция перехода на страницу
+            function goToPage(index) {
+                if (index === currentPageIndex || isAnimating) return;
+                
+                isAnimating = true;
+                
+                // Определяем направление перехода
+                const isForward = index > currentPageIndex;
+                
+                // Текущая страница
+                const currentPage = pages[currentPageIndex];
+                // Новая страница
+                const newPage = pages[index];
+                
+                // Убираем все классы с новой страницы
+                newPage.classList.remove('active', 'slide-left', 'slide-right');
+                
+                // Подготавливаем новую страницу
+                if (isForward) {
+                    // Устанавливаем новую страницу справа (для появления справа)
+                    newPage.style.transform = 'translateX(100%)';
+                } else {
+                    // Устанавливаем новую страницу слева (для появления слева)
+                    newPage.style.transform = 'translateX(-100%)';
+                }
+                
+                newPage.style.opacity = '0';
+                newPage.style.visibility = 'visible';
+                
+                // Запускаем анимацию через requestAnimationFrame для лучшей производительности
+                requestAnimationFrame(() => {
+                    // Запускаем анимацию ухода текущей страницы
+                    if (isForward) {
+                        currentPage.style.transform = 'translateX(-100%)';
+                    } else {
+                        currentPage.style.transform = 'translateX(100%)';
+                    }
+                    currentPage.style.opacity = '0';
+                    
+                    // Запускаем анимацию появления новой страницы
+                    requestAnimationFrame(() => {
+                        newPage.style.transform = 'translateX(0)';
+                        newPage.style.opacity = '1';
+                        newPage.classList.add('active');
+                    });
+                });
+                
+                // Обновляем индикатор
+                updateActiveDot(index);
+                
+                // После завершения анимации очищаем классы
+                setTimeout(() => {
+                    currentPage.classList.remove('active');
+                    currentPage.style.visibility = 'hidden';
+                    isAnimating = false;
+                }, 600); // Время должно соответствовать времени анимации в CSS
+                
+                // Обновляем текущий индекс
+                currentPageIndex = index;
+            }
+            
+            // Обновление активной точки
+            function updateActiveDot(index) {
+                dots.forEach((dot, i) => {
+                    if (i === index) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
