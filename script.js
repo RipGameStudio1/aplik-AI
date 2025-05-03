@@ -5,6 +5,37 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextButtons = document.querySelectorAll('.next-button');
     const pageIndicator = document.querySelector('.page-indicator');
     
+    // Добавляем CSS для регулировки контейнера
+    const flexibleContainerStyle = document.createElement('style');
+    flexibleContainerStyle.textContent = `
+        .container {
+            position: relative;
+            width: 100vw;
+            max-width: calc(min(100vh * 9 / 16 + 100px, 100vw));
+            min-width: calc(100vh * 9 / 16);
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(145deg, #ffffff, #f5f7fa);
+            margin: 0 auto;
+        }
+
+        @media (max-width: calc(100vh * 9 / 16)) {
+            .container {
+                width: 100vw;
+                min-width: 100vw;
+                height: calc(100vw * 16 / 9);
+                max-height: 100vh;
+                border-radius: 0;
+            }
+        }
+        
+        /* Фиксируем позиции левых элементов в абсолютных величинах */
+        .welcome-text, .main-text, .welcome-content, .page2-content, .page-indicator {
+            left: calc(min(100vh * 9 / 16, 100vw) * 0.06); /* 6% от базовой ширины */
+        }
+    `;
+    document.head.appendChild(flexibleContainerStyle);
+    
     let currentPageIndex = 0;
     let startX, startY;
     let isDragging = false;
