@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Знакомство с Апликом</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="pages-container">
+            <div class="page active" id="page1">
+                <div class="welcome-text">
+                    Привет!
+                </div>
+                
+                <div class="welcome-content">
+                    <p class="page-title">Меня зовут Аплик!</p>
+                    <p class="page-subtitle">я помогу тебе на пути к цели! ✨</p>
+                </div>
+                
+                <div class="image-container">
+                    <img src="aplik.png" alt="Аплик" class="character-image">
+                </div>
+                
+                <div class="next-button" data-go-to="page2">
+                    <span class="ready-text">я готов!</span>
+                    <span class="material-icons-round">arrow_forward_ios</span>
+                </div>
+            </div>
+            
+            <div class="page" id="page2">
+                <div class="page2-content">
+                    <h2 class="page2-title">Вторая страница</h2>
+                    <p class="page2-text">Это вторая страница приложения.<br>Свайпни влево или вправо, чтобы переключиться между страницами.</p>
+                </div>
+                
+                <div class="next-button" data-go-to="page3">
+                    <span class="ready-text">Дальше</span>
+                    <span class="material-icons-round">arrow_forward_ios</span>
+                </div>
+            </div>
+            
+            <div class="page" id="page3">
+                <div class="page2-content">
+                    <h2 class="page2-title">Третья страница</h2>
+                    <p class="page2-text">Это последняя страница демонстрации.<br>Ты можешь вернуться назад, если хочешь.</p>
+                </div>
+                
+                <div class="next-button" data-go-to="page1">
+                    <span class="ready-text">В начало</span>
+                    <span class="material-icons-round">arrow_forward_ios</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-indicator">
+            <div class="dot active" data-page="page1"></div>
+            <div class="dot" data-page="page2"></div>
+            <div class="dot" data-page="page3"></div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
